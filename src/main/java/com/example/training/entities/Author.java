@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "authors")
@@ -24,15 +26,11 @@ public class Author implements Serializable {
     @Column(nullable = false, length = 30)
     private String country;
 
-    public Author() {
-    }
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
 
-    public Author(Integer id, String name, String lastName, LocalDate birthday, String country) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.country = country;
+    public Author() {
+        books = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -80,5 +78,11 @@ public class Author implements Serializable {
         return Period.between( birthday,LocalDate.now()).getYears();
     }
 
-    
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

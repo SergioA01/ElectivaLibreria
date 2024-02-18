@@ -1,6 +1,7 @@
 package com.example.training.controllers;
 
 import com.example.training.entities.Author;
+import com.example.training.entities.Book;
 import com.example.training.responses.ResponseHandler;
 import com.example.training.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/author")
@@ -79,43 +77,41 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("/books/id")
-    public ResponseEntity<Object> getBooks(@PathVariable Integer id ){
-        try {
-            Author author = authorService.findById(id);
+    @GetMapping("/books/{id}")
+    public ResponseEntity<Object> getBooks(@PathVariable Integer id){
+        try{
+            Author author = authorService.findById( id );
+            if( author != null ){
 
-            if(author != null){
+                List<Book> result = authorService.getBooks( author );
 
-                List<Book> result = BookService.getBooks(author);
-
-                return ResponseHandler.generateResponse("Success", httpStatus.CREATED, result);
+                return ResponseHandler.generateResponse("Succes",HttpStatus.CREATED, result );
             }
 
-            return  ResponseHandler.generateResponse("Success",HttpStatus.NOT_FOUND, null);
+            return ResponseHandler.generateResponse("Success Author",HttpStatus.NOT_FOUND, null );
 
-        }catch (Exception e){
-            return  ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+        }catch( Exception e ){
+
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id ){
-        try {
-            Author author = authorService.findById(id);
+        try{
+            Author author = authorService.findById( id );
+            if( author != null ){
 
-            if(author != null){
+                authorService.delete( author );
 
-                authorService.delete(author);
-
-                return ResponseHandler.generateResponse("Success", httpStatus.ACCEPTED, author);
+                return ResponseHandler.generateResponse("Succes",HttpStatus.ACCEPTED, author );
             }
 
-            return  ResponseHandler.generateResponse("Success Author",HttpStatus.NOT_FOUND, null);
+            return ResponseHandler.generateResponse("Success Author",HttpStatus.NOT_FOUND, null );
 
-        }catch (Exception e){
-            return  ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+        }catch( Exception e ){
+
+            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
         }
     }
-    
-    
 }

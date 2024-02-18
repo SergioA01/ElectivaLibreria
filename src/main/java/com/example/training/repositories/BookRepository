@@ -1,5 +1,0 @@
-package com.example.training.repositories;
-
-public interface BookRepository extends JpaRepository<Book, Integer>{
-
-}

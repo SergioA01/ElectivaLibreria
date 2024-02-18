@@ -1,6 +1,7 @@
 package com.example.training.services;
 
 import com.example.training.entities.Author;
+import com.example.training.entities.Book;
 import com.example.training.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,12 +40,12 @@ public class AuthorService {
         return authorRepository.findByName( name );
     }
 
-    public List<Book> getBooks(Author author){
-
+    public List<Book> getBooks( Author author ){
         return author.getBooks();
     }
 
-    public void delete(Author author){
-        authorRepository.delete(author);
+    public void delete( Author author ){
+
+        authorRepository.delete( author );
     }
 }
