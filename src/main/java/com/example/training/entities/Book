@@ -1,0 +1,85 @@
+package com.example.training.entities;
+
+import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "books")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(nullable = false, length = 50)
+    private String titulo;
+
+    @Column(name = "date_release")
+    private LocalDate date_release;
+
+    @Column(nullable = false)
+    private short pages;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColum(nullable = false, foreignKey = @ForeignKey(name = "fk_boot_to_author"))
+    @JsonIgnore
+    private Author author;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<Book> books;
+
+    public Book() {
+        books = new ArrayList<>();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public LocalDate getDate_release() {
+        return date_release;
+    }
+
+    public void setDate_release(LocalDate date_release) {
+        this.date_release = date_release;
+    }
+
+    public short getPages() {
+        return pages;
+    }
+
+    public void setPages(short pages) {
+        this.pages = pages;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+}
