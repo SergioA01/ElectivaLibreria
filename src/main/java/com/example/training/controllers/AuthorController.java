@@ -2,8 +2,10 @@ package com.example.training.controllers;
 
 import com.example.training.entities.Author;
 import com.example.training.entities.Book;
+import com.example.training.entities.Person;
 import com.example.training.responses.ResponseHandler;
 import com.example.training.services.AuthorService;
+import com.example.training.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +45,13 @@ public class AuthorController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestBody Author author ){
+    @Autowired
+    private PersonService personService;
+    @PostMapping("/{id}")
+    public ResponseEntity<Object> save(@RequestBody Author author, @PathVariable Long id ){
         try {
+            Person person = personService.getPersonById(id);
+            author.setPerson(person);
             Author result = authorService.save( author );
 
             return  ResponseHandler.generateResponse("Success",HttpStatus.CREATED,result);
@@ -66,7 +72,7 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("/name/{name}")
+    /*@GetMapping("/name/{name}")
     public ResponseEntity<Object> findByName(@PathVariable  String name){
         try {
             List<Author> result = authorService.findByName( name );
@@ -75,7 +81,7 @@ public class AuthorController {
         }catch (Exception e){
             return  ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
         }
-    }
+    }*/
 
     @GetMapping("/books/{id}")
     public ResponseEntity<Object> getBooks(@PathVariable Integer id){

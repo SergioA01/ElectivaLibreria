@@ -15,22 +15,28 @@ public class Author implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
-    private String name;
-    @Column(nullable = false, length = 20, name = "last-name")
-    private String lastName;
+    private String biography;
+    private String nationality;
+    private String notableWorks;
+    private String awards;
 
-    @Column(nullable = false)
-    private LocalDate birthday;
-
-    @Column(nullable = false, length = 30)
-    private String country;
+    @OneToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
 
     @OneToMany(mappedBy = "author")
     private List<Book> books;
 
     public Author() {
-        books = new ArrayList<>();
+    }
+
+    public Author(String biography, String nationality, String notableWorks, String awards, Person person, List<Book> books) {
+        this.biography = biography;
+        this.nationality = nationality;
+        this.notableWorks = notableWorks;
+        this.awards = awards;
+        this.person = person;
+        this.books = books;
     }
 
     public Integer getId() {
@@ -41,41 +47,44 @@ public class Author implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getBiography() {
+        return biography;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getNationality() {
+        return nationality;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public String getNotableWorks() {
+        return notableWorks;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setNotableWorks(String notableWorks) {
+        this.notableWorks = notableWorks;
     }
 
-    public String getCountry() {
-        return country;
+    public String getAwards() {
+        return awards;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setAwards(String awards) {
+        this.awards = awards;
     }
 
-    public int getAge(){
+    public Person getPerson() {
+        return person;
+    }
 
-        return Period.between( birthday,LocalDate.now()).getYears();
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public List<Book> getBooks() {

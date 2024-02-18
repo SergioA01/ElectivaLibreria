@@ -2,6 +2,7 @@ package com.example.training.services;
 
 import com.example.training.entities.Author;
 import com.example.training.entities.Book;
+import com.example.training.entities.Category;
 import com.example.training.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,9 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book save(Book book, Author author){
+    public Book save(Book book, Author author, Category category){
         book.setAuthor( author );
+        book.setCategories(List.of(category));
 
         return bookRepository.save( book );
     }

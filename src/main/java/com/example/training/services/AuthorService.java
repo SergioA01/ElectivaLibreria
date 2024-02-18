@@ -32,13 +32,10 @@ public class AuthorService {
 
     public List<Author> findByCountry( String country){
 
-        return authorRepository.findByCountry( country );
+        return authorRepository.findByNationality( country );
     }
 
-    public List<Author> findByName( String name ){
 
-        return authorRepository.findByName( name );
-    }
 
     public List<Book> getBooks( Author author ){
         return author.getBooks();
